@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Treinos</title>
+    <style>
+        *
+        {
+        -webkit-touch-callout: none;  /* iPhone OS, Safari */
+        -webkit-user-select: none;    /* Chrome, Safari 3 */
+        -khtml-user-select: none;     /* Safari 2 */
+        -moz-user-select: none;       /* Firefox */
+        -ms-user-select: none;        /* IE10+ */
+        user-select: none;            /* Possível implementação no futuro */
+        }
+        .X
+        {
+            padding: 0px;
+            margin: 0px;
+            margin-bottom: 3px;
+            width: 48px;
+            height: 48px;
+            font-size: 30px;
+            background-image: url("Imgs/X.jfif");
+        }
+        .O
+        {
+            padding: 0px;
+            margin: 0px;
+            margin-bottom: 3px;
+            width: 48px;
+            height: 48px;
+            font-size: 30px;
+            background-image: url("Imgs/O.jpg");
+        }
+
+        button
+        {
+            border: 1px solid rgb(255, 221, 177);
+        }
+        #Fundo
+        {
+            height: 400px;
+            width: 99.7%;
+            background-color: antiquewhite;
+            border:  3px solid rgb(248, 210, 156);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 300px;
+        }
+        #Tabuleiro
+        {
+            border: 0px;
+            margin:  auto;
+            background-color: black;
+            display: block;
+            text-align: center;
+            width: 152px;
+            height: 150px;
+            padding: 0px;
+        }
+        .BTN_JOGO
+        {
+            cursor: pointer;
+            background-color: rgba(250, 235, 215, 0.918);
+            padding: 0px;
+            margin: 0px;
+            margin-bottom: 3px;
+            width: 48px;
+            height: 48px;
+            font-size: 30px;
+        }
+        #linha
+        {
+            padding: 0px;
+            margin: 0px;
+            width: 150px;
+            height: 48px;
+        }
+        #ButtonArea
+        {
+            margin: auto;
+            margin-top: 20px;
+            justify-content: space-between;
+        }
+        .Btn
+        {
+            font-size: 16px;
+            margin: 0px;
+            padding: 0px;
+            height: 25px;
+            width: 49px;
+            background-color: rgba(210, 105, 30, 0.308);
+            border: 1px solid rgba(0, 0, 0, 0.336);
+        }
+
+        #BtnNovo
+        {
+            margin-top: 3px;
+            width: 155px;
+        }
+
+
+    </style>
+</head>
+<body onload="Configurar()">
+    <div id="Fundo">
+        <div id="Base">
+            <div id="Tabuleiro">
+                    <div class="Linha">
+                        <button class="BTN_JOGO" id="L0C0" onclick="VerificarDisponibilidade(0,0)"></button>
+                        <button class="BTN_JOGO" id="L0C1" onclick="VerificarDisponibilidade(0,1)"></button>
+                        <button class="BTN_JOGO" id="L0C2" onclick="VerificarDisponibilidade(0,2)"></button>
+                    </div>
+                    <div class="Linha">
+                        <button class="BTN_JOGO" id="L1C0" onclick="VerificarDisponibilidade(1,0)"></button>
+                        <button class="BTN_JOGO" id="L1C1" onclick="VerificarDisponibilidade(1,1)"></button>
+                        <button class="BTN_JOGO" id="L1C2" onclick="VerificarDisponibilidade(1,2)"></button>
+                    </div>
+                    <div class="Linha">
+                        <button class="BTN_JOGO" id="L2C0" onclick="VerificarDisponibilidade(2,0)"></button>
+                        <button class="BTN_JOGO" id="L2C1" onclick="VerificarDisponibilidade(2,1)"></button>
+                        <button class="BTN_JOGO" id="L2C2" onclick="VerificarDisponibilidade(2,2)"></button>
+                    </div>
+                </div>
+                <div id="ButtonArea">
+                    <button class="Btn" onclick="dificuldade = 'facil'; Reiniciar()" ><strong>Fácil</strong></button>
+                    <button class="Btn" onclick="dificuldade = 'Medio'; Reiniciar()"><strong>Médio</strong></button>
+                    <button class="Btn" onclick="dificuldade = 'Dificil'; Reiniciar()"><strong>Difícil</strong></button>
+                </div>
+                <button id="BtnNovo" class="Btn"onclick="Reiniciar()"><strong>Novo</strong></button>
+            </div>
+        </div>
+    </body>
+ </body>
+<script>
+    var Jogadas = 0;
+    var Lacuna = [];
+    var dificuldade;
+    var fim;
+
+    function Configurar()
+    {
+        fim = false;
+        Jogadas = 0;
+        Lacuna = [["1","2","3"],["4","5","6"],["7","8","9"]];
+    }
+
+    function VerificarDisponibilidade(linha, coluna)
+    {
+        if(fim == false)
+        {
+            if(dificuldade == null)
+            {
+                alert("Escolha uma dificuldade antes!");
+                return;
+            }
+
+            if(Lacuna[linha][coluna] != "X" && Lacuna[linha][coluna] != "O" )
+            {
+                var obj = document.getElementById("L"+linha+"C"+coluna);
+                obj.setAttribute("Class","X");
+                Lacuna[linha][coluna] = "X";
+                Jogadas+=1;
+                VerificarFimDoJogo();
+                if(Jogadas != 5)
+                {
+                    if(dificuldade == 'facil')
+                    {
+                        JogarAleatorio();
+                    }
+                    else if(dificuldade == 'Medio')
+                    {
+                        JogarIa();
+                    }
+                    else if(dificuldade == 'Dificil')
+                    {
+                        JogarIaDificil();
+                    }
+                }
+            }
+        } 
+    }
+
+    function JogarAleatorio()
+    {
+            var L = Math.floor(Math.random()*2);
+            var C = Math.floor(Math.random()*2);
+
+            while(true)
+            {
+                if(Lacuna[L][C] != "X" && Lacuna[L][C] != "O" ) 
+                {
+                    var obj = document.getElementById("L"+L+"C"+C);
+                    obj.setAttribute("Class","O");
+                    Lacuna[L][C] = "O";
+                    break;
+                }
+                L = Math.floor(Math.random()*3);
+                C = Math.floor(Math.random()*3);
+            }
+            VerificarFimDoJogo()
+        
+    }
+
+    function VerificarFimDoJogo()
+    {
+        console.log(Lacuna);
+        if(fim == true){return;}        
+
+        if((Lacuna[0][0]) == (Lacuna[0][1]) && (Lacuna[0][2]) == (Lacuna[0][1])) //L1
+        {
+            setTimeout(function(){alert("Fim do jogo, " + (Lacuna[0][0]) + " ganhou!")},200);
+            fim = true;
+        } 
+        
+        else if((Lacuna[1][0]) == (Lacuna[1][1]) && (Lacuna[1][2]) == (Lacuna[1][1]))//L2
+        {
+            setTimeout(function(){alert("Fim do jogo, " + (Lacuna[1][0]) + " ganhou!")},200);
+            fim = true;
+        }  
+
+        else if((Lacuna[2][0]) == (Lacuna[2][1]) && (Lacuna[2][2]) == (Lacuna[2][1]))//L3
+        {
+            setTimeout(function(){alert("Fim do jogo, " + (Lacuna[2][0]) + " ganhou!")},200);
+            fim = true;
+        } 
+
+        else if((Lacuna[0][0]) == (Lacuna[1][0]) && (Lacuna[2][0]) == (Lacuna[1][0]))//C1
+        {
+            setTimeout(function(){alert("Fim do jogo, " + (Lacuna[1][0]) + " ganhou!")},200);
+            fim = true;
+        } 
+
+        else if((Lacuna[0][1]) == (Lacuna[1][1]) && (Lacuna[2][1]) == (Lacuna[1][1]))//C2
+        {
+            setTimeout(function(){alert("Fim do jogo, " + (Lacuna[0][1]) + " ganhou!")},200);
+            fim = true;
+        } 
+
+        else if((Lacuna[0][2]) == (Lacuna[1][2]) && (Lacuna[2][2]) == (Lacuna[1][2]))//C3
+        {
+            setTimeout(function(){alert("Fim do jogo, " + (Lacuna[2][2]) + " ganhou!")},200);
+            fim = true;
+        } 
+    
+        else if((Lacuna[0][2]) == (Lacuna[1][1]) && (Lacuna[0][2]) == (Lacuna[2][0]))// diag /
+        {
+            setTimeout(function(){alert("Fim do jogo, " + (Lacuna[1][1]) + " ganhou!")},200);
+            fim = true;
+        } 
+
+        else if((Lacuna[0][0]) == (Lacuna[1][1]) && (Lacuna[0][0]) == (Lacuna[2][2]))// diag \
+        {
+            setTimeout(function(){alert("Fim do jogo, " + (Lacuna[1][1]) + " ganhou!")},200);
+            fim = true;
+        }
+
+        else if(Jogadas == 5)
+        {
+            setTimeout(function(){alert("    Empate!\nFim do jogo!")},200);
+            fim = true;
+        }
+
+        else
+        {
+            fim = false;
+        }
+    }
+
+    function Reiniciar()
+    {
+        for(var l = 0; l < 3; l ++)
+        {
+            for(var c = 0 ; c < 3 ; c++)
+            {
+                var obj = document.getElementById("L"+l+"C"+c);
+                obj.removeAttribute("class");
+                obj.setAttribute("class","BTN_JOGO");
+            }    
+        }
+        Configurar();
+    }
+
+    function JogarIa()
+    {
+        var Ia = ChanceDePerder();
+        if(Ia == 'null')
+        {
+            JogarAleatorio();
+            if(VerificarFimDoJogo()){return;}
+        }
+        else
+        {
+            var obj = document.getElementById("L"+Ia[0]+"C"+Ia[1]);
+            obj.setAttribute("Class","O");
+            Lacuna[Ia[0]][Ia[1]] = "O";
+            if(VerificarFimDoJogo()){return;}
+        }
+    }
+    
+    function JogarIaDificil()
+    {
+        var ganha = ChanceDeGanhar();
+        if(ganha != 'null')
+        {
+            var obj = document.getElementById("L"+ganha[0]+"C"+ganha[1]);
+            obj.setAttribute("Class","O");
+            Lacuna[ganha[0]][ganha[1]] = "O";
+            if(VerificarFimDoJogo()){return;}
+        }
+        else
+        {
+            var Ia = ChanceDePerder();
+            if(Ia == 'null')
+            {
+                JogarAleatorio();
+                if(VerificarFimDoJogo()){return;}
+            }
+            else
+            {
+                var obj = document.getElementById("L"+Ia[0]+"C"+Ia[1]);
+                obj.setAttribute("Class","O");
+                Lacuna[Ia[0]][Ia[1]] = "O";
+                if(VerificarFimDoJogo()){return;}
+            }
+        }
+    }
+
+    function ChanceDePerder()
+    {
+
+        //Linha sup
+        if(Lacuna[0][0] == "X" && Lacuna[0][1] ==  "X" && /*EC == 0 &&*/Lacuna[0][2] !=  "O" && Lacuna[0][2] !=  "X") // esq sup
+        {
+            var pos = []
+            pos.push(0);
+            pos.push(2);
+            //EC = 1;
+            return pos;
+        }
+        if(Lacuna[0][1] == "X" &&  Lacuna[0][2] == "X" && /*DC == 0 &&*/ Lacuna[0][0] !=  "O" && Lacuna[0][0] !=  "X") // dir sup
+        {
+            var pos = []
+            pos.push(0);
+            pos.push(0);
+            //DC = 1;
+            return pos;
+        }
+
+        //Linha meio
+        if(Lacuna[1][0] == "X" &&  Lacuna[1][1] ==  "X" && /*EM == 0 &&*/ Lacuna[1][2] !=  "O" && Lacuna[1][2] !=  "X") // esq meio
+        {
+            var pos = []
+            pos.push(1);
+            pos.push(2);
+            //EM = 1;
+            return pos;
+        }
+        if(Lacuna[1][1] == "X" &&  Lacuna[1][2] ==  "X" && /*DM == 0 &&*/ Lacuna[1][0] !=  "O" && Lacuna[1][0] !=  "X") // dir meio
+        {
+            var pos = []
+            pos.push(1);
+            pos.push(0);
+            //DM = 1;
+            return pos;
+        }
+
+        //Linha inf
+        if(Lacuna[2][0] == "X" &&  Lacuna[2][1] ==  "X" && /*EB == 0 &&*/ Lacuna[2][2] !=  "O" && Lacuna[2][2] !=  "X") // esq baixo
+        {
+            var pos = []
+            pos.push(2);
+            pos.push(2);
+            //EB = 1;
+            return pos;
+        }
+        if(Lacuna[2][1] == "X" &&  Lacuna[2][2] ==  "X" && /*DB == 0 &&*/ Lacuna[2][0] !=  "O" && Lacuna[2][0] !=  "X") // dir baixo
+        {
+            var pos = []
+            pos.push(2);
+            pos.push(0);
+            //DB = 1;
+            return pos;
+        }
+
+        //Coluna 1
+        if(Lacuna[0][0] == "X" && Lacuna[1][0] == "X" /*&& C1 == 0*/ && Lacuna[2][0] !=  "O" && Lacuna[2][0] !=  "X") //Sup
+        {
+            var pos = []
+            pos.push(2);
+            pos.push(0);
+            //C1 = 1;
+            return pos;
+        }
+        if(Lacuna[1][0] == "X" && Lacuna[2][0] == "X" /*&& B1 == 0*/ && Lacuna[0][0] !=  "O" && Lacuna[0][0] !=  "X") //Inf
+        {
+            var pos = []
+            pos.push(0);
+            pos.push(0);
+            //B1 = 1;
+            return pos;
+        }
+        //Coluna 2
+        if(Lacuna[0][1] == "X" && Lacuna[1][1] == "X" /*&&  C2 == 0*/ && Lacuna[2][1] !=  "O" && Lacuna[2][1] !=  "X") //Sup
+        {
+            var pos = []
+            pos.push(2);
+            pos.push(1);
+            //C2 = 1;
+            return pos;
+        }
+        if(Lacuna[1][1] == "X" && Lacuna[2][1] == "X" /*&&  B2 == 0*/ && Lacuna[0][1] !=  "O" && Lacuna[0][1] !=  "X") //Inf
+        {
+            var pos = []
+            pos.push(0);
+            pos.push(1);
+            //B2 = 1;
+            return pos;
+        }
+
+        //Coluna 3
+        if(Lacuna[0][2] == "X" && Lacuna[1][2] == "X" /*&& C3 == 0*/ && Lacuna[2][2] !=  "O" && Lacuna[2][2] !=  "X") //Sup
+        {
+            var pos = []
+            pos.push(2);
+            pos.push(2);
+            //C3 = 1;
+            return pos;
+        }
+        if(Lacuna[1][2] == "X" && Lacuna[2][2] == "X" /*&& B3 == 0*/ && Lacuna[0][2] !=  "O" && Lacuna[0][2] !=  "X") //Inf
+        {
+            var pos = []
+            pos.push(0);
+            pos.push(2);
+            //B3 = 1;
+            return pos;
+        }
+
+        //Diag Sup \
+        if(Lacuna[0][0] == "X" && Lacuna[1][1] == "X" /*&& DES == 0*/ && Lacuna[2][2] !=  "O" && Lacuna[2][2] !=  "X")
+        {
+            var pos = []
+            pos.push(2);
+            pos.push(2);
+            //DES = 1;
+            return pos;
+        }
+        //Diag Inf \
+        if(Lacuna[1][1] == "X" && Lacuna[2][2] == "X"/* && DEI == 0*/ && Lacuna[0][0] !=  "O" && Lacuna[0][0] !=  "X")
+        {
+            var pos = []
+            pos.push(0);
+            pos.push(0);
+            //DEI = 1;
+            return pos;
+        }
+
+        //Diag Sup /
+        if(Lacuna[0][2] == "X" && Lacuna[1][1] == "X" /*&& DDS == 0*/ && Lacuna[2][0] !=  "O" && Lacuna[2][0] !=  "X")
+        {
+            var pos = []
+            pos.push(2);
+            pos.push(0);
+            //DDS = 1;
+            return pos;
+        }
+
+        //Diag Inf /
+        if(Lacuna[2][0] == "X" && Lacuna[1][1] == "X" /*&& DDI == 0*/ && Lacuna[0][2] !=  "O" && Lacuna[0][2] !=  "X")
+        {
+            var pos = []
+            pos.push(0);
+            pos.push(2);
+            //DDI = 1;
+            return pos;
+        }
+
+        //Diag separada /
+        if(Lacuna[0][2] == "X" && Lacuna[2][0] == "X" /*&& DDI == 0*/ && Lacuna[1][1] !=  "O" && Lacuna[1][1] !=  "X")
+        {
+            var pos = []
+            pos.push(1);
+            pos.push(1);
+            //DDI = 1;
+            return pos;
+        }
+
+        //Diag separada \
+        if(Lacuna[0][0] == "X" && Lacuna[2][2] == "X" /*&& DDI == 0*/ && Lacuna[1][1] !=  "O" && Lacuna[1][1] !=  "X")
+        {
+            var pos = []
+            pos.push(1);
+            pos.push(1);
+            //DDI = 1;
+            return pos;
+        }
+
+
+        //L1 Afastada
+        if(Lacuna[0][0] == "X" &&  Lacuna[0][2] == "X" /*&& L1A == 0*/ && Lacuna[0][1] !=  "O" && Lacuna[0][1] !=  "X")
+        {
+            var pos = []
+            pos.push(0);
+            pos.push(1);
+           //L1A = 1;
+            return pos;
+        }
+        //L2 Afastada
+        if(Lacuna[1][0] == "X" &&  Lacuna[1][2] == "X" /*&& L2A == 0*/ && Lacuna[1][1] !=  "O" && Lacuna[1][1] !=  "X")
+        {
+            var pos = []
+            pos.push(1);
+            pos.push(1);
+            //L2A = 1;
+            return pos;
+        }
+        //L3 Afastada
+        if(Lacuna[2][0] == "X" &&  Lacuna[2][2] == "X" /*&& L3A == 0*/ && Lacuna[2][1] !=  "O" && Lacuna[2][1] !=  "X")
+        {
+            var pos = []
+            pos.push(2);
+            pos.push(1);
+            //L3A = 1;
+            return pos;
+        }
+
+        //C1 Afastada
+        if(Lacuna[0][0] == "X" &&  Lacuna[2][0] == "X" /*&& C1A == 0*/ &&Lacuna[1][0] !=  "O" && Lacuna[1][0] !=  "X")
+        {
+            var pos = []
+            pos.push(1);
+            pos.push(0);
+            //C1A = 1;
+            return pos;
+        }
+        //C2 Afastada
+        if(Lacuna[0][1] == "X" &&  Lacuna[2][1] == "X" /*&& C2A == 0*/ && Lacuna[1][1] !=  "O" && Lacuna[1][1] !=  "X")
+        {
+            var pos = []
+            pos.push(1);
+            pos.push(1);
+           // C2A = 1;
+            return pos;
+        }
+        //C3 Afastada
+        if(Lacuna[0][2] == "X" &&  Lacuna[2][2] == "X" /*&& C3A == 0*/ && Lacuna[1][2] !=  "O" && Lacuna[1][2] !=  "X")
+        {
+            var pos = []
+            pos.push(1);
+            pos.push(2);
+            //C3A = 1;
+            return pos;
+        }
+        
+        else
+        {
+            return ("null");
+        }
+    }
+
+    function ChanceDeGanhar()
+    {
+        //Linha sup
+        if(Lacuna[0][0] == "O" && Lacuna[0][1] ==  "O" && /*EC == 0 &&*/ Lacuna[0][2] ==  "3") // esq sup
+        {
+            var pos = []
+            pos.push(0);
+            pos.push(2);
+            //EC = 1;
+            return pos;
+        }
+        if(Lacuna[0][1] == "O" &&  Lacuna[0][2] == "O" && /*DC == 0 &&*/ Lacuna[0][0] ==  "1") // dir sup
+        {
+            var pos = []
+            pos.push(0);
+            pos.push(0);
+            //DC = 1;
+            return pos;
+        }
+
+        //Linha meio
+        if(Lacuna[1][0] == "O" &&  Lacuna[1][1] ==  "O" && /*EM == 0 &&*/ Lacuna[1][2] ==  "6") // esq meio
+        {
+            var pos = []
+            pos.push(1);
+            pos.push(2);
+            //EM = 1;
+            return pos;
+        }
+        if(Lacuna[1][1] == "O" &&  Lacuna[1][2] ==  "O" && /*DM == 0 &&*/ Lacuna[1][0] ==  "4") // dir meio
+        {
+            var pos = []
+            pos.push(1);
+            pos.push(0);
+            //DM = 1;
+            return pos;
+        }
+
+        //Linha inf
+        if(Lacuna[2][0] == "O" &&  Lacuna[2][1] ==  "O" && /*EB == 0 &&*/ Lacuna[2][2] ==  "9") // esq baixo
+        {
+            var pos = []
+            pos.push(2);
+            pos.push(2);
+            //EB = 1;
+            return pos;
+        }
+        if(Lacuna[2][1] == "O" &&  Lacuna[2][2] ==  "O" && /*DB == 0 &&*/ Lacuna[2][0] ==  "7") // dir baixo
+        {
+            var pos = []
+            pos.push(2);
+            pos.push(0);
+            //DB = 1;
+            return pos;
+        }
+
+        //Coluna 1
+        if(Lacuna[0][0] == "O" && Lacuna[1][0] == "O" /*&& C1 == 0*/ && Lacuna[2][0] ==  "7") //Sup
+        {
+            var pos = []
+            pos.push(2);
+            pos.push(0);
+            //C1 = 1;
+            return pos;
+        }
+        if(Lacuna[1][0] == "O" && Lacuna[2][0] == "O" /*&& B1 == 0*/ && Lacuna[0][0] ==  "1") //Inf
+        {
+            var pos = []
+            pos.push(0);
+            pos.push(0);
+            //B1 = 1;
+            return pos;
+        }
+        //Coluna 2
+        if(Lacuna[0][1] == "O" && Lacuna[1][1] == "O" /*&&  C2 == 0*/ && Lacuna[2][1] ==  "8") //Sup
+        {
+            var pos = []
+            pos.push(2);
+            pos.push(1);
+            //C2 = 1;
+            return pos;
+        }
+        if(Lacuna[1][1] == "O" && Lacuna[2][1] == "O" /*&&  B2 == 0*/ && Lacuna[0][1] ==  "2") //Inf
+        {
+            var pos = []
+            pos.push(0);
+            pos.push(1);
+            //B2 = 1;
+            return pos;
+        }
+
+        //Coluna 3
+        if(Lacuna[0][2] == "O" && Lacuna[1][2] == "O" /*&& C3 == 0*/ && Lacuna[2][2] ==  "9") //Sup
+        {
+            var pos = []
+            pos.push(2);
+            pos.push(2);
+            //C3 = 1;
+            return pos;
+        }
+        if(Lacuna[1][2] == "O" && Lacuna[2][2] == "O" /*&& B3 == 0*/ && Lacuna[0][2] ==  "3") //Inf
+        {
+            var pos = []
+            pos.push(0);
+            pos.push(2);
+            //B3 = 1;
+            return pos;
+        }
+
+        //Diag Sup \
+        if(Lacuna[0][0] == "O" && Lacuna[1][1] == "O" /*&& DES == 0*/ && Lacuna[2][2] ==  "9")
+        {
+            var pos = []
+            pos.push(2);
+            pos.push(2);
+            //DES = 1;
+            return pos;
+        }
+        //Diag Inf \
+        if(Lacuna[1][1] == "O" && Lacuna[2][2] == "O"/* && DEI == 0*/ && Lacuna[0][0] ==  "1")
+        {
+            var pos = []
+            pos.push(0);
+            pos.push(0);
+            //DEI = 1;
+            return pos;
+        }
+
+        //Diag Sup /
+        if(Lacuna[0][2] == "O" && Lacuna[1][1] == "O" /*&& DDS == 0*/ && Lacuna[2][0] ==  "7")
+        {
+            var pos = []
+            pos.push(2);
+            pos.push(0);
+            //DDS = 1;
+            return pos;
+        }
+
+        //Diag Inf /
+        if(Lacuna[2][0] == "O" && Lacuna[1][1] == "O" /*&& DDI == 0*/ && Lacuna[0][2] ==  "3")
+        {
+            var pos = []
+            pos.push(0);
+            pos.push(2);
+            //DDI = 1;
+            return pos;
+        }
+
+        //Diag separada /
+        if(Lacuna[0][2] == "O" && Lacuna[2][0] == "O" /*&& DDI == 0*/ && Lacuna[1][1] ==  "5")
+        {
+            var pos = []
+            pos.push(1);
+            pos.push(1);
+            //DDI = 1;
+            return pos;
+        }
+
+        //Diag separada \
+        if(Lacuna[0][0] == "O" && Lacuna[2][2] == "O" /*&& DDI == 0*/ && Lacuna[1][1] ==  "5")
+        {
+            var pos = []
+            pos.push(1);
+            pos.push(1);
+            //DDI = 1;
+            return pos;
+        }
+
+
+        //L1 Afastada
+        if(Lacuna[0][0] == "O" &&  Lacuna[0][2] == "O" /*&& L1A == 0*/ && Lacuna[0][1] ==  "2")
+        {
+            var pos = []
+            pos.push(0);
+            pos.push(1);
+           //L1A = 1;
+            return pos;
+        }
+        //L2 Afastada
+        if(Lacuna[1][0] == "O" &&  Lacuna[1][2] == "O" /*&& L2A == 0*/ && Lacuna[1][1] ==  "5")
+        {
+            var pos = []
+            pos.push(1);
+            pos.push(1);
+            //L2A = 1;
+            return pos;
+        }
+        //L3 Afastada
+        if(Lacuna[2][0] == "O" &&  Lacuna[2][2] == "O" /*&& L3A == 0*/ && Lacuna[2][1] ==  "8")
+        {
+            var pos = []
+            pos.push(2);
+            pos.push(1);
+            //L3A = 1;
+            return pos;
+        }
+
+        //C1 Afastada
+        if(Lacuna[0][0] == "O" &&  Lacuna[2][0] == "O" /*&& C1A == 0*/ &&Lacuna[1][0] ==  "4")
+        {
+            var pos = []
+            pos.push(1);
+            pos.push(0);
+            //C1A = 1;
+            return pos;
+        }
+        //C2 Afastada
+        if(Lacuna[0][1] == "O" &&  Lacuna[2][1] == "O" /*&& C2A == 0*/ && Lacuna[1][1] ==  "5")
+        {
+            var pos = []
+            pos.push(1);
+            pos.push(1);
+           // C2A = 1;
+            return pos;
+        }
+        //C3 Afastada
+        if(Lacuna[0][2] == "O" &&  Lacuna[2][2] == "O" /*&& C3A == 0*/ && Lacuna[1][2] ==  "6")
+        {
+            var pos = []
+            pos.push(1);
+            pos.push(2);
+            //C3A = 1;
+            return pos;
+        }
+        
+        else
+        {
+            return ("null");
+        }
+    }
+
+</script>
+</html>

@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Treinos</title>
+    <Style>
+        *
+        {
+            -webkit-touch-callout: none;  /* iPhone OS, Safari */
+            -webkit-user-select: none;    /* Chrome, Safari 3 */
+            -khtml-user-select: none;     /* Safari 2 */
+            -moz-user-select: none;       /* Firefox */
+            -ms-user-select: none;        /* IE10+ */
+            user-select: none;            /* Possível implementação no futuro */
+            /* cursor: default; */
+        }
+        @font-face
+        {
+            font-family: 'Digital';
+            src: url('Fonte/Ds-Digit.ttf');
+            font-weight: normal;
+            font-style: normal;
+        }
+        body
+        {
+            width: 98%;
+            height: 725px;
+            background-color: rgba(95, 158, 160, 0.774);
+            border: rgb(79, 133, 134) 7px solid;
+            text-align: center;
+            align-items: center;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+        #Fundo
+        {
+            margin: auto;
+            display: inline-block;
+        }
+        #Placar
+        {
+            margin: auto;
+            padding: 0px;
+            background-color: rgb(0, 0, 0);
+            width: 210px;
+            height: 82px;
+            margin-bottom: 15px;
+            font-size: 80px;
+            color: rgb(255, 255, 255);
+            font-family: "Digital";
+            padding-top: 3px;
+        }
+        #ButtonArea
+        {
+            margin: auto;
+            border: solid 2px black;
+            width: 700px;
+            height: 50px;
+            background-color: grey;
+            display: flex;
+            justify-content: space-around;
+        }
+        #Superior
+        {
+            align-content: space-around;
+        }
+        #Inferior
+        {
+            margin-top: 20px;
+            display: flex;
+        }
+        #Mesa
+        {
+            margin: auto;
+            width: 950px;
+            background-image: url("Imgs/Mesa.jfif");
+            background-size: cover;
+            height: 500px;
+            border-bottom: solid black 15px;
+            border-top: solid black 15px;
+        }
+        #NPC
+        {
+            top: 300px;
+            left: 260px;
+            position: absolute;
+            border: solid 3px black;
+            background-color: rgb(59, 59, 59);
+            width: 5px;
+            height: 105px;
+        }
+        #Raquete
+        {            
+            top: 300px;
+            left: 1172px;
+            position: absolute;
+            border: solid 3px black;
+            background-color: rgb(59, 59, 59);
+            width: 5px;
+            height: 105px;
+        }
+        #Bola
+        {
+            width: 35px;
+            height: 35px;
+            left: 290px;
+            top: 340px;
+            position: absolute;
+            background-image: url("Imgs/Bolinha.png");
+	        background-size: cover;
+        }
+        button
+        {
+            color: rgb(255, 255, 255);
+            font-family: "DIGITAL";
+            font-size: 20px;
+            width: 2500px;
+            background-color: rgb(0, 0, 0);
+            border: 1px solid rgb(255, 255, 255);
+        }
+        button:hover
+        {
+            cursor: pointer;
+        }
+        .bordinha
+        {
+            margin: auto;
+            width: 200px;
+            height: 75px;
+            padding: 0px;
+            border: solid white 2px;
+        }
+        .Linha
+        {
+            background-color: red;
+            width: 5px;
+            height: 500px;
+        }
+        #LinhaDireita
+        {
+            position: absolute;
+            left: 263px;
+        }
+        #LinhaEsquerda
+        {
+            position: absolute;
+            left: 1175px;
+        }
+        #Contagem
+        {
+            position: absolute;
+            top: 370px;
+            left: 672px;
+            width: 100px;
+            height: 40px;
+            font-size: 30px; 
+            border: white solid 2px;
+            background-color: red;
+        }
+
+    </Style>
+</head>
+<body >
+    <div id="Fundo">
+        <div id="Superior">
+            <div id="Placar"><div id="PlacarV" class="bordinha">0 : 0</div></div>
+            <div id="Mesa">
+                <div id="Contagem" onclick="Contar()">Iniciar</div>
+                <div id="LinhaDireita" class="Linha"></div>
+                <div id="LinhaEsquerda" class="Linha"></div>
+                <div id="NPC"></div>
+                <div id="Raquete"></div>
+                <div id="Bola"></div>
+            </div>
+        </div>
+        <div id="Inferior">
+            <div id="ButtonArea">
+                <button onclick="JogoIniciado=0;Pausar();Contar()">Reiniciar</button> 
+                <button onclick="Pausar()">Pausar</button> 
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    var YNPC;
+    var ContNPC;
+    var VelControle;
+    var PosRQT;
+    var YRQT;
+    var Controladora;
+    var VelX;
+    var VelY;
+    var PosXbola;
+    var PosYbola;
+    var XBola;
+    var YBola;
+    var Jogador;
+    var NPC;
+    var ContRqt;
+    var Contagem = 4;
+    var JogoIniciado = 0;
+
+    function Regressiva()
+    {
+        Contagem --;
+        var obj = document.getElementById("Contagem");
+        obj.style.top = "315px";
+        obj.style.left = "672px";
+        obj.style.width = "100px";
+        obj.style.height = "150px";
+        obj.style.fontSize = "130px";
+        obj.style.color = "white";
+        obj.innerHTML = Contagem;
+        if(Contagem == 0)
+        {
+            Contagem = 4;
+            obj.style.visibility = "hidden";
+            if(JogoIniciado == 0)
+            {
+                JogoIniciado = 1;
+                Configurar();
+            }
+            else
+            {
+                Controladora = setInterval(Atualizar,10);                
+            }
+        }
+    }
+
+    function Contar()
+    {
+        var obj = document.getElementById("Contagem");
+        obj.style.visibility = "visible";
+        obj.style.top = "370px";
+        obj.style.left = "672px";
+        obj.style.width = "100px";
+        obj.style.height = "40px";
+        obj.style.fonSize = "30px"; 
+        Regressiva();
+        setTimeout(Regressiva,1000);
+        setTimeout(Regressiva,2000);
+        setTimeout(Regressiva,3000);
+    }
+
+    function Reset()
+    {
+        YNPC = 300;
+        PosRQT = 300;
+        YRQT = 0;
+        VelX = Math.round(Math.random()*3)+7 +VelControle;
+        PosXbola = 300;
+        PosYbola = 330;
+        XBola = 1;
+        VelY = Math.round(Math.random()*5)+6 +VelControle;
+
+        if(Math.round(Math.random()) == 0)
+        {
+            YBola = -1;
+        }
+        else
+        {
+            YBola = 1;
+        }
+        var obj = document.getElementById("Raquete");
+        obj.style.top = PosRQT + "px";
+    }
+    
+    function Configurar()
+    {
+        VelControle = 0;
+        Jogador = 0;
+        NPC = 0;
+        var obj = document.getElementById("PlacarV");
+        obj.innerHTML = NPC + " : " + Jogador;
+        document.addEventListener("keydown",Mover);
+        document.addEventListener("keyup",Parar);
+        Recarregar();
+    }
+
+    function Recarregar()
+    {
+        Reset();
+        clearInterval(Controladora);
+        clearInterval(ContRqt);
+        clearInterval(ContNPC);
+        ContRqt = setInterval(MoverRQT,10);
+        ContNPC = setInterval(MoverNPC,10);
+        Controladora = setInterval(Atualizar,10);
+    }
+
+    function Pausar(){clearInterval(Controladora);}
+
+    function MoverRQT()
+    {
+        if(YRQT != 0)
+        {
+            var obj = document.getElementById("Raquete");
+            if((PosRQT + YRQT*6) > 134 && (PosRQT + YRQT*6) < 538)
+            {
+                PosRQT += YRQT*6;
+                obj.style.top = PosRQT + "px";
+            }
+        }
+    }    
+    
+    function Atualizar()
+    {
+        var Bola = document.getElementById("Bola");
+        VerificarTrajetoria();
+        Bola.style.top = PosYbola + "px";
+        Bola.style.left = PosXbola + "px";
+        VerificarRebatida();
+        VerificarRebatidaNPC();
+        VerificarPonto();
+    }
+
+    function Mover()
+    {
+        var tecla = event.keyCode;
+        switch(tecla)
+        {
+            case 38:
+                YRQT = -1;
+            break;
+
+            case 40:
+                YRQT = 1;
+            break;
+        }
+    }
+    
+    function Parar()
+    {
+        var tecla = event.keyCode;
+        switch(tecla)
+        {
+            case 38:
+                YRQT = 0;
+            break;
+
+            case 40:
+                YRQT = 0;
+            break;
+        }
+    }
+
+    function VerificarPonto()
+    {
+        
+        if(PosXbola + XBola*VelX > 1149) //ponto NPC
+        {
+            var obj = document.getElementById("PlacarV");
+            NPC ++;
+            obj.innerHTML = NPC + " : " + Jogador;
+            PosXbola = 300;
+            PosYbola = 330;
+            Pausar();
+            Contar();
+        }
+        else if(PosXbola + XBola*VelX < 260) //Ponto Jogador
+        {
+            var obj = document.getElementById("PlacarV");
+            Jogador ++;
+            obj.innerHTML = NPC + " : " + Jogador;
+            PosXbola = 300;
+            PosYbola = 330;
+            Pausar();
+            Contar();
+        }
+    }
+
+    function VerificarTrajetoria()
+    {
+        PosXbola += XBola*VelX;
+        if((PosYbola + (VelY*YBola)) > 605) //batendo embaixo
+        {
+            PosYbola = (605 - ((PosYbola + (VelY*YBola)) - 605));
+            YBola = -1;
+            if(VelY > 6){VelY-=1}
+        }
+        else if((PosYbola + (VelY*YBola)) < 142) //batendo encima
+        {
+            PosYbola = (142 + ((PosYbola - (VelY*YBola)) - 142));
+            YBola = 1;
+            if(VelY > 6){VelY-=1}
+        }
+        else
+        {
+            PosYbola += VelY*YBola;
+        }
+    }
+
+    function VerificarRebatida()
+    {
+        if(PosXbola >= 1135 && PosXbola <= 1142) // verificar se está na linha da raquete
+        {
+            var definir = 0;
+            definir = (PosYbola - PosRQT);
+            if(definir >= 22 && definir <= 50)//meio da raquete
+            {
+                if(Math.round(Math.random()) == 0)
+                {
+                    YBola = -1;
+                }
+                else
+                {
+                    YBola = 1;
+                }
+                if(VelX <= 7)
+                VelX++;
+                VelY++;
+                XBola = -1;
+            }
+            if(definir >= -30 && definir <= 21)//Parte Superior
+            {
+                if(YBola == -1)//Bola subindo
+                {
+                    if(VelX <= 7)
+                    VelX += 2;
+                    XBola = -1;
+                    YBola = -1;
+                }
+
+                else if(YBola == 1)//Bola descendo
+                {
+                    VelY += 2;
+                    XBola = -1;
+                    YBola = -1;                    
+                }
+            }
+            
+            if(definir >= 51 && definir <= 100)//Parte Inferior
+            {
+                if(YBola == -1)//Bola subindo
+                {
+                    VelY += 2;
+                    XBola = -1;
+                    YBola = 1;
+                }
+
+                else if(YBola == 1)//Bola descendo
+                {
+                    if(VelX <= 7)
+                    VelX += 2;
+                    XBola = -1;
+                    YBola = 1;                    
+                }
+            }
+        }
+    }
+
+    function MoverNPC()
+    {
+        if(PosXbola <= 550)
+        {
+            var antigo = 0;
+            antigo = YNPC;
+            if(YNPC < PosYbola)
+            {
+                YNPC += 7;
+            }
+            else if(YNPC > PosYbola)
+            {
+                YNPC -= 7;
+            }
+            if(YNPC < 134 && YNPC > 538)
+            {
+                YNPC = antigo;
+            }
+            var obj = document.getElementById("NPC");
+            obj.style.top = YNPC + "px";
+        }
+    }
+
+    function VerificarRebatidaNPC()
+    {
+        if(PosXbola >= 267 && PosXbola <= 273) // verificar se está na linha da raquete
+        {
+            var definir = 0;
+            definir = (PosYbola - YNPC);
+            if(definir >= 21 && definir <= 47)//meio da raquete
+            {
+                if(Math.round(Math.random()) == 0)
+                {
+                    YBola = -1;
+                }
+                else
+                {
+                    YBola = 1;
+                }
+                if(VelX <= 7)
+                VelX++;
+                VelY++;
+                XBola = 1;
+            }
+            if(definir >= -30 && definir <= 20)//Parte Superior
+            {
+                if(YBola == -1)//Bola subindo
+                {
+                    if(VelX <= 7)
+                    VelX += 2;
+                    XBola = 1;
+                    YBola = -1;
+                }
+
+                else if(YBola == 1)//Bola descendo
+                {
+                    VelY += 2;
+                    XBola = 1;
+                    YBola = -1;                    
+                }
+            }
+            
+            if(definir >= 48 && definir <= 100)//Parte Inferior
+            {
+                if(YBola == -1)//Bola subindo
+                {
+                    VelY += 2;
+                    XBola = 1;
+                    YBola = 1;
+                }
+
+                else if(YBola == 1)//Bola descendo
+                {
+                    if(VelX <= 7)
+                    VelX += 2;
+                    XBola = 1;
+                    YBola = 1;                    
+                }
+            }
+        }
+    }
+
+</script>
+</html>

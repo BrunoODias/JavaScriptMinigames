@@ -1,0 +1,376 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Treinos</title>
+
+    <Style>
+        body
+        {
+            background-color: rgb(177, 177, 177);
+        }
+        #Mesa
+        {
+            width: 600px;
+            height: 500px;
+            border: solid 1px white;
+            border-radius: 3px;
+            background: url("Imgs/Fundo.jpg");
+            margin: auto;
+            padding: 5px;
+            display: block;
+        }
+        .Et
+        {
+            height: 50px;
+            width: 40px;
+            background: url("Imgs/ET1.png");
+            background-repeat: no-repeat;
+            background-size: 130%;
+            background-position: center;
+            margin: 5px;
+            position: absolute;
+            filter: invert(100);
+        }
+        .morte
+        {
+            background: url("Imgs/Gif-Fim.gif") !important;
+            filter: invert(0) !important;
+            background-size: 120% !important;
+        }
+        .l
+        {
+            display: flex;
+            margin-bottom: 50px;
+        }
+        #PosAbs
+        {
+            position: absolute;
+            height: auto;
+        }
+        #Nave
+        {
+            position: relative;
+            background: url("Imgs/Nave.png");
+            background-position: center;
+            background-size: 110%;
+            background-repeat: no-repeat;
+            top: 400px;
+            left: 300px;
+            width: 50px;
+            height: 70px;
+            transition: left 1s;
+        }
+        .tiro
+        {
+            position: relative;
+            width: 3px;
+            height: 14px;
+            background: white;
+            top: 300px;
+            transition: top 700ms;
+        }
+        .BordaCarregamento
+        {
+            position:absolute;
+            border: solid white 1px;
+            border-radius: 2px;
+            height: 6px;
+            width: 40px;
+            margin-top: 58px;
+            margin-left: 2px;
+        }
+        #BarraCarregamento
+        {
+            background-color: rgba(182, 255, 0, 0.6); 
+            position:absolute;
+            height: 100%;
+            width: 0%;
+        }
+        .Carregando
+        {
+            transition: width 1s;
+        }
+        #Conteiner
+        {
+            display: block;
+            width: 100%;
+            height: 600px;
+        }
+        #ButtonArea
+        {
+            border: solid 1px black;
+            padding: 1px;
+            width: 607px;
+            margin: auto;
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-around;
+            background: white;
+        }
+        .ControllButtons
+        {
+            border: 1px solid black;
+            padding: 2px;
+            width: 210px;
+        }
+        .ControllButtons button
+        {
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            border: 1px solid black;
+            background-color: grey;
+        }
+        .Logo
+        {
+            width: 280px;
+            border: solid 1px black;
+            /* background-image: url(Imgs/Gif-Fim.gif); */
+            background-repeat: no-repeat;
+            background-size: 400%;
+            background-position: center;
+            display: flex;
+            justify-content: space-around;
+            background-color: black;
+        }
+        .img
+        {
+            width: 50px;
+            height: 50px;    
+            background-repeat: no-repeat !important;
+            background-size: 130% !important;
+            background-position: center !important;       
+        }
+        #placar
+        {
+            width: 100px;
+            border: solid black 1px;
+            text-align: center;
+            font-size: 45px;
+        }
+
+    </Style>
+
+</head>
+
+
+<body onload="Iniciar()">
+    <div id="Conteiner">
+        <div id="Mesa">
+            <div id="carregar" style="background-image: url('Imgs/Gif-Fim.gif');" onload="document.getElementById('carregar').parentNode.removeChild(document.getElementById('carregar'))"></div>
+            <div id="PosAbs"></div>
+            <div id="Nave">
+                <div class="BordaCarregamento">
+                    <div id="BarraCarregamento" class="carregando"></div>
+                </div>
+            </div>
+        </div>
+        <div id="ButtonArea">
+            <div class="ControllButtons"><button onclick="KeyDown(37)"><</button>
+                <button style="width: 100px;"onclick="KeyDown(32)">Atirar</button>
+                <button onclick="KeyDown(39)">></button>
+            </div>
+            <div src="url(Imgs/Gif-Fim.gif)" class="Logo">
+                <div style="background: url(Imgs/Et2.png); background-size: 100% !important;" class="img"></div>
+                <div style="background: url(Imgs/Et3.png)" class="img"></div>
+                <div style="background: url(Imgs/Et1.png); background-size: 180% !important; filter: invert(100)" class="img"></div>
+            </div>
+            <div id="placar">0</div>
+        </div>
+    </div>
+</body>
+
+<script>
+    
+    var Nave = document.getElementById("Nave");
+    var Pos = 6;
+    var pronto = 1;
+    var ControlEt;
+    var movendo = 0;
+    var MoveEt=0;
+    var Dir = 1;
+    var MoveCompleto = 0;
+    var placar=0;
+    var ElPlacar = document.getElementById("placar");
+
+    function Mover()
+    {
+        var ets;
+        ets = document.getElementsByClassName("Et");
+        if(MoveEt < 4)
+        {
+            for(var i = 0; i < ets.length; i ++)
+            {
+                ets[i].style.left = (Number(ets[i].style.left.split("px")[0]) + (Dir * 50)) + "px";
+            }
+            MoveEt++;
+        }
+        else
+        {
+            MoveEt = 0;
+            Dir = Dir*-1;
+            MoveCompleto++;
+            if(MoveCompleto == 2)
+            {
+                AdicionarEts();
+                MoveCompleto = 0;
+            }
+            Mover();
+        }        
+    }
+
+    function Iniciar()
+    {
+        AdicionarEts();
+        ControlEt = setInterval(function(){Mover()},1100);
+    }
+
+    function FinalizarGame()
+    {
+        clearInterval(ControlEt);
+    }
+
+    function AdicionarEts()
+    {
+        const ets = /*'<div class="l">' +*/
+                           '<div class="Et" style="left: 0px;"></div>' +
+                           '<div class="Et" style="left: 50px;"></div>' +
+                           '<div class="Et" style="left: 100px;"></div>' +
+                           '<div class="Et" style="left: 150px;"></div>' +
+                           '<div class="Et" style="left: 200px;"></div>' +
+                           '<div class="Et" style="left: 250px;"></div>' +
+                           '<div class="Et" style="left: 300px;"></div>' +
+                           '<div class="Et" style="left: 350px;"></div>' /* +
+                   '</div>'*/;
+                
+        var e = document.createElement("div");
+        e.setAttribute("class","l");
+        e.innerHTML = ets;
+        var el = document.getElementById("PosAbs");
+        el.prepend(e);
+
+        if(document.getElementsByClassName("l").length > 8){FinalizarGame()};
+    }
+
+    function Atirar()
+    {
+        if (pronto == 0) { return; };
+        var postiro = (Pos * 50 + 21);
+        var barra = document.getElementById("BarraCarregamento");
+        var elemento = document.createElement("div");
+        elemento.style.left = postiro +"px";
+        elemento.setAttribute("class", "tiro");
+        Nave.parentNode.appendChild(elemento); 
+        setTimeout(() => {
+            elemento.style.top = -75 +"px";
+        }, 10);
+        setTimeout(() => {
+            elemento.parentNode.removeChild(elemento);
+        }, 500);
+
+
+        barra.style.width = 0 + "px";
+
+        setTimeout(() => {
+        barra.setAttribute("class", "Carregando");
+        }, 10);
+
+        setTimeout(() => {
+        barra.style.width = 100 + "%";
+            
+        }, 15);
+
+        setTimeout(function () {
+            barra.removeAttribute("class", "Carregando");
+            pronto = 1;
+        }, 1000);
+
+        pronto = 0;
+
+        setTimeout(() => {
+            VerificarTiros(postiro);
+        }, 350);
+    }
+
+    function VerificarTiros(posx)
+    {
+        var ets = document.getElementsByClassName("Et");
+        for(var i = ets.length-1; i > -1 ; i--)
+        {
+            var ver = 0;
+            ver = Number(ets[i].style.left.split("px")[0]) - posx;
+            if(ver == -21)
+            {
+                var rem = ets[i];
+                rem.classList.add("morte");
+                setTimeout(() => {
+                    Remover(rem);
+                }, 400);
+                RemoverL();
+                return;
+            }
+        }
+    }
+
+    function Remover(rem)
+    {
+        rem.parentNode.removeChild(rem);
+        placar++;
+        ElPlacar.innerHTML = placar;
+    }
+
+    function RemoverL()
+    {
+        var eles = document.getElementsByClassName("l");
+        for(var i = 0; i< eles.length ; i++)
+        {
+            var ele = eles[i];
+            var content =  ele.outerHTML.replace('<div class"l">',"").replace('<div class="Et morte" style="left: 350px;"></div>',"");
+            console.log(ele);
+            console.log(content);
+            if(content.length == 68 || content.length == 69 || content.length == 70)
+            {
+                Remover(ele);
+            }
+        } 
+    }
+
+    function KeyDown(keyCode)
+    {
+
+        if(movendo == 1){return;}
+        switch (keyCode)
+        {
+            case 37:
+                movendo = 1;
+                Pos == 0 ? Pos = Pos : Pos -= 1;
+                Nave.style.left = Pos * 50 + "px";
+                setTimeout(() => {
+                    movendo = 0;
+                }, 400);
+                break;
+
+            case 39:
+                movendo = 1;
+                Pos == 11 ? Pos = Pos : Pos += 1;
+                Nave.style.left = Pos * 50 + "px";
+                setTimeout(() => {
+                    movendo = 0;
+                }, 400);
+                break;
+    
+            case 32:
+                Atirar();
+                break;
+        }
+    }
+
+    document.addEventListener("keydown", function (evento){
+        KeyDown(evento.keyCode)
+    });
+</script>
+
+</html>

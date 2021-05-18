@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Treinos</title>
+    <style>
+        #Tudo
+        {
+            width: 100%;
+            height: 300px;
+            background-color: rgba(5, 255, 255, 0.445);
+            margin: auto;
+            border: 2px solid black;
+            position: absolute;
+        }
+        #Conteiner
+        {
+            height: 150px;
+            width: 100%;
+            align-items: center;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            margin: auto;
+            margin-top: 50px;
+        }
+        #Personagem
+        {
+            text-align: center;
+            font-size: 40px;
+            background-color: white;
+            width: 75px;
+            height: 150px;
+            margin-right: 12px;
+            border: black 2px solid;
+        }
+        #Central
+        {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+        #Campo
+        {
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: black 2px solid;
+            height: 95px;
+            background-color: beige;
+            width: 400px;
+        }
+        #ButtonArea
+        {
+            display: inline-block;
+            width: 50px;
+            text-align: center;
+        }
+        button
+        {
+            height: 44px;
+            margin: 5px;
+            width: 130px;
+            font-size: 17px;
+        }
+        #Rodape
+        {
+            margin: 0px;
+            text-align: center;
+            width: 100%;
+            margin: 2px solid black;
+        }
+    </style>
+</head>
+<body onload="Configurar()">
+    <div id="Tudo">
+        <div id="Conteiner">
+            <div id="Personagem"></div>
+            <div id="Central">
+                <div id="Campo"></div>
+                <div id="ButtonArea">
+                    <button id="Novo" onclick="Configurar()">Novo</button>
+                    <button id="Revelar" onclick="Revelar()">Revelar</button>
+                </div>
+            </div>
+        </div>
+        <div id="Rodape"></div>
+    </div>
+ </body>
+<script>
+    var Palavras = [];
+    var Palavra = "";
+    var Erros;
+    var nPalavra;
+    var PalavraTraceada = "";
+    var aux = 0;
+    var TeclaJogada = [];
+
+    function Configurar()
+    {
+        Palavras = [];
+        Palavra = "";
+        Erros = 0;
+        nPalavra = 0;
+        PalavraTraceada = "";
+        aux = 0;
+        TeclaJogada = [];
+        CarregarVetor();
+        Erros = 0;
+        Dicas = 0;
+        document.addEventListener("keydown",Tecla);
+        var obj = document.getElementById("Rodape");
+        var Campo = document.getElementById("Campo");
+        nPalavra = Math.floor(Math.random()*14);
+        Rodape = Palavras[nPalavra][1];
+        Palavra = Palavras[nPalavra][0];
+        obj.innerHTML = Rodape;
+        PalavraTraceada = "";
+        for(var i = 0 ; i < Palavra.length ; i++)
+        {
+            PalavraTraceada += "_ ";
+        }
+        Campo.innerHTML = PalavraTraceada;
+
+        aux = (PalavraTraceada.match(/[\w]/gi).length);
+        AtualizarBoneco();
+    }
+
+    function Tecla()
+    {
+        console.log(Palavras);
+        var tecla = event.keyCode;
+        switch(tecla) //Não Abre, Mto Grande
+        {
+            case 186:
+            VerificarTecla("Ç");
+            break;
+
+            case 65:
+            VerificarTecla("A");
+            break;
+
+            case 66:
+            VerificarTecla("B");
+            break;
+
+            case 67:
+            VerificarTecla("C");
+            break;
+
+            case 68:
+            VerificarTecla("D");
+            break;
+
+            case 69:
+            VerificarTecla("E");
+            break;
+
+            case 70:
+            VerificarTecla("F");
+            break;
+
+            case 71:
+            VerificarTecla("G");
+            break;
+
+            case 72:
+            VerificarTecla("H");
+            break;
+
+            case 73:
+            VerificarTecla("I");
+            break;
+
+            case 74:
+            VerificarTecla("J");
+            break;
+
+            case 75:
+            VerificarTecla("K");
+            break;
+
+            case 76:
+            VerificarTecla("L");
+            break;
+
+            case 77:
+            VerificarTecla("M");
+            break;
+
+            case 78:
+            VerificarTecla("N");
+            break;
+
+            case 79:
+            VerificarTecla("O");
+            break;
+
+            case 80:
+            VerificarTecla("P");
+            break;
+
+            case 81:
+            VerificarTecla("Q");
+            break;
+
+            case 82:
+            VerificarTecla("R");
+            break;
+
+            case 83:
+            VerificarTecla("S");
+            break;
+
+            case 84:
+            VerificarTecla("T");
+            break;
+
+            case 85:
+            VerificarTecla("U");
+            break;
+
+            case 86:
+            VerificarTecla("V");
+            break;
+
+            case 87:
+            VerificarTecla("W");
+            break;
+
+            case 88:
+            VerificarTecla("X");
+            break;
+
+            case 89:
+            VerificarTecla("Y");
+            break;
+
+            case 90:
+            VerificarTecla("Z");
+            break;
+
+            
+        }
+    }
+
+    function VerificarTecla(Tecla)
+    {
+        if(TeclaJogada.indexOf(Tecla) != -1)
+        {
+            alert("Tecla ja usada!");
+            return;
+        }
+        TeclaJogada.push(Tecla);
+        var achou = 0;
+        var StringSaida = PalavraTraceada.split(" ");
+        StringSaida = StringSaida.slice(0,aux);
+        for (var  i = 0; i<Palavra.length; i++)
+        {
+            //console.log("entrou no for até " + Palavra.length);
+            var c = Palavra.charAt(i);
+            if(c == Tecla)
+            {
+                StringSaida[i] = Tecla;
+               // console.log("StringSaida["+i+"] recebeu '" + Tecla + "'.");
+                achou = 1;
+            }
+        }
+        if(achou == 0)
+        {
+            Erros += 1;
+            AtualizarBoneco();
+        }
+        else
+        {
+            PalavraTraceada = "";
+            for(var i = 0; i<StringSaida.length;i++)
+            {
+                PalavraTraceada += StringSaida[i] + " ";
+            }
+            var obj = document.getElementById("Campo");
+            obj.innerHTML = PalavraTraceada;
+            console.log(PalavraTraceada.length);
+
+            if((PalavraTraceada.match(/_/)) == null)
+            {
+                RemoverEvent();
+                setTimeout(function(){ alert("Você acertou!"); }, 100)
+            }
+        }
+    }
+
+    function RemoverEvent()
+    {
+        document.removeEventListener("keydown",Tecla);
+    }
+
+    function AtualizarBoneco()
+    {
+        var obj = document.getElementById("Personagem");
+        switch(Erros)
+        {
+            case 0:
+                obj.innerHTML = "";
+            break;
+
+            case 1:
+                obj.innerHTML = "( )";
+            break;
+        
+            case 2:
+                obj.innerHTML = "( )<br>|";
+            break;
+            
+            case 3:
+                obj.innerHTML = "( )<br>/| ";
+            break;
+            
+            case 4:
+                obj.innerHTML = "( )<br>/|\\";
+            break;
+            
+            case 5:
+                obj.innerHTML = "( )<br>/|\\<br>/";
+            break;
+
+            case 6:
+                obj.innerHTML = "( )<br>/|\\<br>/\\";
+                setTimeout(function(){ alert("Você perdeu!"); }, 100) //para trollar desative 
+                RemoverEvent(); //       essas 2 linhas e atives as linhas abaixo
+            break;
+
+            // case 7:
+            //     obj.innerHTML = "( )<br>/|\\<br>/'\\";          //Ative essas
+            //     alert("Você perdeu!");
+            //     RemoverEvent();
+            // break;   
+        }
+    }
+
+    function Revelar()
+    {
+        var obj = document.getElementById("Campo");
+        obj.innerHTML = Palavra;
+        RemoverEvent();
+    }
+
+    function CarregarVetor()
+    {
+        var a1 = ["GIRAFA","ANIMAL DA SAVANA"];
+        var a2 = ["PAPAGAIO","ANIMAL VOADOR"];
+        var a3 = ["AÇAI","SOBREMESA GELADA"];
+        var a4 = ["MINECRAFT","JOGO DE COMPUTADOR"];
+        var a5 = ["TODO MUNDO ODEIA O CHRIS","SERIADO"];
+        var a6 = ["VINGADORES","FILME DE SUPER-HERÓI"];
+        var a7 = ["CLIPE","ACESSÓRIO DE ESCRITÓRIO"];
+        var a8 = ["LIVRO","FONTE DE CONHECIMENTO"];
+        var a9 = ["GROELANDIA","PAÍS"];
+        var a10 = ["MUSTANG","CARRO"];
+        var a11 = ["ZEPPELIN","MEIO DE LOCOMOÇÃO AÉREA"];
+        var a12 = ["ALICATE","FERRAMENTA DE OBRA"];
+        var a13 = ["CONE","ACESSÓRIO DE ESPORTE"];
+        var a14 = ["NARUTO","ANIME"];
+        Palavras.push(a1);
+        Palavras.push(a2);
+        Palavras.push(a3);
+        Palavras.push(a4);
+        Palavras.push(a5);
+        Palavras.push(a6);
+        Palavras.push(a7);
+        Palavras.push(a8);
+        Palavras.push(a9);
+        Palavras.push(a10);
+        Palavras.push(a11);
+        Palavras.push(a12);
+        Palavras.push(a13);
+        Palavras.push(a14);
+    }
+</script>
+</html>

@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Treinos</title>
+    <Style>
+        *
+        {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+        }
+        #Conteiner
+        {
+            margin: auto !important;    
+        }
+        #logo
+        {
+            width: auto;
+            height: 75px;
+            font-size: 50px;
+            text-align: center;
+            border: solid 3px rgb(138, 138, 138);
+            border-radius: 35px;
+            background-color: white;
+            margin-top: 20px !important;
+        }
+        body
+        {
+            background-color: coral;
+        }
+        #Superior
+        {   
+            margin: auto;
+            border: solid 2px;
+            width: 322px;
+            height: 321px;
+            background-color: rgba(0, 0, 0, 0.911);
+            padding-right: 1px;
+        }
+        .Bloco
+        {
+            width: 30px;
+            height: 30px;
+            border: 1px solid white;
+            border-radius: 3px;
+            background-color: rgb(138, 139, 139);
+            margin: 0px;
+            padding: 0px;
+            text-align: center;
+            font-size: 25px;
+            font-weight: bold;
+        }
+        .Bloco :hover
+        {
+            background-color: rgba(255, 255, 255, 0.288);
+            cursor: grab;
+        }
+        .L1
+        {
+            position: absolute;
+            display: flex;
+            top: 10px;
+        }
+        .L2
+        {
+            position: absolute;
+            display: flex;
+            top: 42px;
+        }
+        .L3
+        {
+            position: absolute;
+            display: flex;
+            top: 74px;
+        }
+        .L4
+        {
+            position: absolute;
+            display: flex;
+            top: 106px;
+        }
+        .L5
+        {
+            position: absolute;
+            display: flex;
+            top: 138px;
+        }
+        .L6
+        {
+            position: absolute;
+            display: flex;
+            top: 170px;
+        }
+        .L7
+        {
+            position: absolute;
+            display: flex;
+            top: 202px;
+        }
+        .L8
+        {
+            position: absolute;
+            display: flex;
+            top: 234px;
+        }
+        .L9
+        {
+            position: absolute;
+            display: flex;
+            top: 266px;
+        }
+        .L10
+        {
+            position: absolute;
+            display: flex;
+            top: 298px;
+        }
+        #Mesa
+        {
+            display: inline-block;
+            padding: 2px;
+            background-color: black;
+            border-top: 2px solid black;
+            border-bottom: 2px solid black;
+        }
+        #ButtonArea
+        {
+            display: flex;
+            justify-content: space-between;
+        }
+        #Inferior
+        {            
+            border: white 1px solid;
+            border-radius: 5px;
+            margin: auto;
+            width: 470px;
+            margin-top: 20px;
+            background-color: black;
+            padding: 5px;
+        }
+        #InfEsq
+        {
+            width: 100px;
+            border: white 1px solid;
+            border-radius: 5px;
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding-top: 35px;
+        }
+        #Placar
+        {
+            font-size: 30px;
+            color: white;
+            background-color: rgb(48, 48, 48);
+            border: 2px solid white;
+            border-radius: 5px;
+            width: 40px;
+            margin: auto;
+            margin-top: 5px;
+        }
+        P
+        {
+            font-size: 25px;
+        }
+        #infMeio
+        {
+            padding-top: 20px;
+            display: inline-block;
+        }
+        #infMeio label
+        {
+            color: white;
+            font-size: 30px;
+            margin-bottom: 10px;
+            text-decoration: underline;
+        }
+        #InfDireito
+        {
+            float: right;
+            width: 100px;
+            margin: 0px;
+            border: 2px solid white;
+            border-radius: 5px;
+            padding: 3px;
+        }
+        button
+        {
+            margin: 0px !important;
+            width: 100px !important;
+            height: 51px !important;
+            margin: 1px !important;
+            border: solid 1px white;
+            border-radius: 5px !important;
+            background-color: black;
+            font-size: 22px !important;
+            color: white;
+        }
+        button:hover
+        {
+            cursor: pointer;
+        }
+        .Clicado
+        {
+            border: solid 1px rgb(56, 65, 55);
+            background-color: rgb(228, 220, 220);
+        }
+    </Style>
+</head>
+<body onload="Iniciar()">
+    <div id="Conteiner">
+        <div id="Superior">
+            <div id="Mesa">
+            </div>
+        </div>
+        <div id="Inferior">
+            <div id="ButtonArea">
+                <div id="InfEsq">
+                    <div id="Placar">25</div>
+                    <p>Bombas</p>
+                </div>
+                <div id="infMeio">
+                    <label>CAMPO MINADO</label>
+                    <div id="logo">💣vs 🏴󠁧󠁢󠁥󠁮󠁧󠁿</div>
+            </div>
+                
+                <div id="InfDireito">
+                    <button onclick="Dificuldade = 15; Reiniciar()">Fácil</button>
+                    <button onclick="Dificuldade = 25; Reiniciar()">Médio</button>
+                    <button onclick="Dificuldade = 45; Reiniciar()">Difícil</button>
+                </div>
+            </div>
+        </div>
+    </div>    
+</body>
+<script>
+var Campo = [];
+var marcados = [];
+var fim = 0;
+var Dificuldade = 25;
+var marcado = 0;
+
+    function Reiniciar()
+    {
+        Campo = [];
+        fim = 0;
+        marcado = 0;
+        marcados = [];
+        DesmontarMesa(); 
+        Iniciar();
+    }
+
+    function Iniciar()
+    {
+        
+        PreencherVetor();
+        for(var i = 0 ; i < Dificuldade ; i ++){GerarMina()}
+        MontarMesa();
+        ContarBombas();
+        var placar = document.getElementById("Placar");
+        // alert(Dificuldade)
+        placar.innerHTML = Dificuldade;
+        // console.log(Campo);
+    }
+
+    function DesmontarMesa()
+    {
+        for(var l = 0 ; l < 10; l ++)
+        {
+            for(var c = 0 ; c < 10; c ++)
+            {
+                var bloco = document.getElementById(l+""+c)
+                bloco.parentNode.removeChild(bloco);
+            }
+        }
+    }
+
+    function MontarMesa()
+    {
+        for(var l = 0 ; l < 10; l ++)
+        {
+            var linha = document.createElement("Div");
+            linha.setAttribute("Class","L"+(l+1));
+            document.getElementById("Mesa").appendChild(linha);
+            for(var c = 0 ; c < 10 ; c ++)
+            {
+                var bloco = document.createElement("Div");
+                bloco.id = l+""+c;
+                bloco.innerHTML = " ";
+                bloco.addEventListener("click",function()
+                {
+                    Clicar(this.id);
+                });
+                bloco.addEventListener("contextmenu",function(event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    Marcar(this.id);
+                });
+                bloco.setAttribute("Class","Bloco");
+                linha.appendChild(bloco);
+                // console.log("Id do novo clique : " + string);
+            }
+        }
+    }
+
+    function AbrirEspacos(l, c)
+    {
+        if(fim == 1){return}
+        // console.log("Esta em "+l+""+c)
+        var revelados = document.querySelectorAll(".Clicado");
+        // console.log(revelados.length)
+        var bloco = document.getElementById(l+""+c);
+        bloco.setAttribute("class","Bloco Clicado");
+        bloco.innerHTML = "";
+        if(revelados.length + Dificuldade + 1 == 100){fim=1;setTimeout(function(){alert("Parabens, você ganhou o jogo!")},200);return;}
+        
+        var pos = document.getElementById(l+","+c);
+                   if(l == 0) //Linha superior
+                   {
+                       if(c==0)
+                       {
+                           if(Campo[0][1] == " ")
+                           {Campo[0][1] = "A";AbrirEspacos(0, 1)}
+                            if(Campo[1][0] == " ")
+                           {Campo[1][0] = "A";AbrirEspacos(1, 0)}
+                       }
+                       else if(c ==9)
+                       {
+                           if(Campo[0][8] == " ")
+                           {Campo[0][8] = "A";AbrirEspacos(0, 8)}
+                           if(Campo[1][8] == " ")
+                           {Campo[1][8] = "A";AbrirEspacos(1, 8)}
+                           if(Campo[1][9] == " ")
+                           {Campo[1][9] = "A";AbrirEspacos(1, 9)}
+                       }
+                       else
+                      {
+                           if(Campo[0][c-1] == " ")
+                           {Campo[0][c-1] = "A";AbrirEspacos(0, c-1)}
+                           if(Campo[0][c+1] == " ")
+                           {Campo[0][c+1] = "A";AbrirEspacos(0, c+1)}
+                           if(Campo[1][c-1] == " ")
+                           {Campo[1][c-1] = "A";AbrirEspacos(1, c-1)}
+                           if(Campo[1][c] == " ")
+                           {Campo[1][c] = "A";AbrirEspacos(1, c)}
+                           if(Campo[1][c+1] == " ")
+                           {Campo[1][c+1] = "A";AbrirEspacos(1, c+1)}
+                      }
+                   }
+                   
+                   else if(l == 9) // Linha Inferior
+                   {
+                       if(c==0)
+                       {
+                           if(Campo[8][0] == " ")
+                           {Campo[8][0] = "A";AbrirEspacos(8, 0)}
+                            if(Campo[8][1] == " ")
+                           {Campo[8][1] = "A";AbrirEspacos(8, 1)}
+                           if(Campo[9][1] == " ")
+                           {Campo[9][1] = "A";AbrirEspacos(9, 1)}
+                       }
+                       else if(c ==9)
+                       {
+                           if(Campo[9][8] == " ")
+                           {Campo[9][8] = "A";AbrirEspacos(9, 8)}
+                           if(Campo[8][8] == " ")
+                           {Campo[8][8] = "A";AbrirEspacos(8, 8)}
+                           if(Campo[8][9] == " ")
+                           {Campo[8][9] = "A";AbrirEspacos(8, 9)}
+                       }
+                       else
+                      {
+                           if(Campo[9][c-1] == " ")
+                           {Campo[9][c-1] = "A";AbrirEspacos(9, c-1)}
+                           if(Campo[9][c+1] == " ")
+                           {Campo[9][c+1] = "A";AbrirEspacos(9, c+1)}
+                           if(Campo[8][c-1] == " ")
+                           {Campo[8][c-1] = "A";AbrirEspacos(8, c-1)}
+                           if(Campo[8][c] == " ")
+                           {Campo[8][c] = "A";AbrirEspacos(8, c)}
+                           if(Campo[8][c+1] == " ")
+                           {Campo[8][c+1] = "A";AbrirEspacos(8, c+1)}
+                      }
+                   }
+                   
+                   else if(l > 0 && l < 9 && (c == 0 || c == 9))
+                    {
+                       if(c == 0)
+                        {
+                            if(Campo[l-1][c] == " "){Campo[l-1][c] = "A";AbrirEspacos(l-1, c)}
+                            if(Campo[l+1][c] == " "){Campo[l+1][c] = "A";AbrirEspacos(l+1, c)}
+                            if(Campo[l-1][c+1] == " "){Campo[l-1][c+1] = "A";AbrirEspacos(l-1, c+1)}
+                            if(Campo[l][c+1] == " "){Campo[l][c+1] = "A";AbrirEspacos(l, c+1)}
+                            if(Campo[l+1][c+1] == " "){Campo[l+1][c+1] = "A";AbrirEspacos(l+1, c+1)}
+                        }
+
+                       if(c == 9)
+                       {
+                            if(Campo[l-1][c] == " "){Campo[l-1][c] = "A";AbrirEspacos(l-1, c)}
+                            if(Campo[l+1][c] == " "){Campo[l+1][c] = "A";AbrirEspacos(l+1, c)}
+                            if(Campo[l-1][c-1] == " "){Campo[l-1][c-1] = "A";AbrirEspacos(l-1, c-1)}
+                            if(Campo[l][c-1] == " "){Campo[l][c-1] = "A";AbrirEspacos(l, c-1)}
+                            if(Campo[l+1][c-1] == " "){Campo[l+1][c-1] = "A";AbrirEspacos(c+1, c-1)}
+                       }
+                    }
+                   
+                    else
+                    {
+                        if(Campo[l-1][c-1] == " "){Campo[l-1][c-1] = "A";AbrirEspacos(l-1, c-1)}
+                        if(Campo[l-1][c] == " "){Campo[l-1][c] = "A";AbrirEspacos(l-1, c)}
+                        if(Campo[l-1][c+1] == " "){Campo[l-1][c+1] = "A";AbrirEspacos(l-1, c+1)}
+                        if(Campo[l][c-1] == " "){Campo[l][c-1] = "A";AbrirEspacos(l, c-1)}
+                        if(Campo[l][c+1] == " "){Campo[l][c+1] = "A";AbrirEspacos(l, c+1)}
+                        if(Campo[l+1][c-1] == " "){Campo[l+1][c-1] = "A";AbrirEspacos(l+1, c-1)}
+                        if(Campo[l+1][c] == " "){Campo[l+1][c] = "A";AbrirEspacos(l+1, c)}
+                        if(Campo[l+1][c+1] == " "){Campo[l+1][c+1] = "A";AbrirEspacos(l+1, c+1)}
+                    }
+    }
+
+    function Clicar(pos)
+    {
+        if(fim == 1){return}
+        var revelados = document.querySelectorAll(".Clicado");
+        // console.log(revelados.length)
+        if(revelados.length + Dificuldade + 1 == 100){fim=1;setTimeout(function(){alert("Parabens, você ganhou o jogo!")},200);return;}
+        if(Campo[pos[0]][pos[1]] == " ")
+        {
+            AbrirEspacos(pos[0],pos[1]);
+        }
+        else if(Campo[pos[0]][pos[1]] == "B")
+        {
+            var bloco = document.getElementById(pos[0]+""+pos[1]);
+            bloco.setAttribute("class","Bloco Clicado");
+            bloco.innerHTML = "💣";
+
+            fim = 1;
+            setTimeout(function()
+            {
+                alert("Você perdeu!");
+            },200);
+        }
+        else if(Campo[pos[0]][pos[1]] == "A"){}
+        else
+        {
+            var bloco = document.getElementById(pos[0]+""+pos[1]);
+            bloco.setAttribute("class","Bloco Clicado");
+            bloco.innerHTML = Campo[pos[0]][pos[1]];
+        }
+    }
+
+    function Marcar(pos)
+    {
+        for(var i = 0 ; i < marcados.length; i ++)
+            {    
+                if(marcados[i][0] == pos[0] && marcados[i][1] == pos[1])
+                {
+                    document.getElementById(pos[0] + "" + pos[1]).innerHTML = "";                    
+                    marcados.splice(i,1);
+                    marcado --;
+                    document.getElementById("Placar").innerHTML = (Dificuldade - marcado);
+                    return;
+                }
+            }
+
+        if(marcado < Dificuldade)
+        {
+            var gomo = document.getElementById(pos[0]+""+pos[1]);
+            if(gomo.textContent != " "){return}
+            if(fim == 1){return}
+            marcado ++; 
+            var a = [];
+            a.push(pos[0]);
+            a.push(pos[1]);
+            marcados.push(a);
+            gomo.innerHTML = "🏴󠁧󠁢󠁥󠁮󠁧󠁿";     
+            var placar = document.getElementById("Placar"); 
+            placar.innerHTML = Dificuldade-marcado;
+        }
+    }
+
+    function PreencherVetor()
+    {
+        for(var i = 0 ; i < 10 ; i ++)
+        {
+          var linha = [];
+          for(var j = 0; j < 10 ; j++)
+          {
+              linha.push(" ");
+          }
+          Campo.push(linha)
+        }
+    }
+    
+    function Disponibilidade(l,c)
+    {
+       if(Campo[l][c] == " ")
+       {
+          return true;
+       }
+       return false;
+    }
+    
+    function GerarMina()
+    {
+       var l;
+       var c;
+       while(true)
+       {
+           l = Math.round(Math.random()*9);
+           c = Math.round(Math.random()*9);
+          if(Disponibilidade(l,c))
+          {
+              Campo[l][c] = "B";
+              break;
+          }
+       }
+    }
+    
+    function ContarBombas()
+    {
+        // console.log(Campo);
+        
+       for(var l = 0; l < 10 ; l++)
+       {
+           
+           for(var c = 0 ; c < 10; c ++)
+           {
+               if(Campo[l][c] != "B")
+               {
+                var pos = document.getElementById(l+""+c);
+                   var qtdd = 0;
+                   if(l == 0) //Linha superior
+                   {
+                       if(c==0)
+                       {
+                           if(Campo[0][1] == "B")
+                           {qtdd ++}
+                            if(Campo[1][0] == "B")
+                           {qtdd ++}
+                           if(Campo[1][1] == "B")
+                           {qtdd ++}
+                       }
+                       else if(c == 9)
+                       {
+                           if(Campo[0][8] == "B")
+                           {qtdd ++}
+                           if(Campo[1][8] == "B")
+                           {qtdd ++}
+                           if(Campo[1][9] == "B")
+                           {qtdd ++}
+                       }
+                       else
+                      {
+                           if(Campo[0][c-1] == "B")
+                           {qtdd ++}
+                           if(Campo[0][c+1] == "B")
+                           {qtdd ++}
+                           if(Campo[1][c-1] == "B")
+                           {qtdd ++}
+                           if(Campo[1][c] == "B")
+                           {qtdd ++}
+                           if(Campo[1][c+1] == "B")
+                           {qtdd ++}
+                      }
+                   }
+                   
+                   if(l == 9) // Linha Inferior
+                   {
+                       if(c==0)
+                       {
+                           if(Campo[8][0] == "B")
+                           {qtdd ++}
+                            if(Campo[8][1] == "B")
+                           {qtdd ++}
+                           if(Campo[9][1] == "B")
+                           {qtdd ++}
+                       }
+                       else if(c ==9)
+                       {
+                           if(Campo[9][8] == "B")
+                           {qtdd ++}
+                           if(Campo[8][8] == "B")
+                           {qtdd ++}
+                           if(Campo[8][9] == "B")
+                           {qtdd ++}
+                       }
+                       else
+                      {
+                           if(Campo[9][c-1] == "B")
+                           {qtdd ++}
+                           if(Campo[9][c+1] == "B")
+                           {qtdd ++}
+                           if(Campo[8][c-1] == "B")
+                           {qtdd ++}
+                           if(Campo[8][c] == "B")
+                           {qtdd ++}
+                           if(Campo[8][c+1] == "B")
+                           {qtdd ++}
+                      }
+                   }
+                   
+                   if(l > 0 && l < 9) //parte interna
+                    {
+                       if(c == 0)
+                        {
+                            if(Campo[l-1][c] == "B"){qtdd++}
+                            if(Campo[l+1][c] == "B"){qtdd++}
+                            if(Campo[l-1][c+1] == "B"){qtdd++}
+                            if(Campo[l][c+1] == "B"){qtdd++}
+                            if(Campo[l+1][c+1] == "B"){qtdd++}
+                        }
+
+                       if(c == 9)
+                       {
+                            if(Campo[l-1][c] == "B"){qtdd++}
+                            if(Campo[l+1][c] == "B"){qtdd++}
+                            if(Campo[l-1][c-1] == "B"){qtdd++}
+                            if(Campo[l][c-1] == "B"){qtdd++}
+                            if(Campo[l+1][c-1] == "B"){qtdd++}
+                       }
+                    }
+                   
+                    if(l>0 && l<9 && c>0 && c<9)
+                    {
+                        if(Campo[l-1][c-1] == "B"){qtdd++}
+                        if(Campo[l-1][c] == "B"){qtdd++}
+                        if(Campo[l-1][c+1] == "B"){qtdd++}
+                        if(Campo[l][c-1] == "B"){qtdd++}
+                        if(Campo[l][c+1] == "B"){qtdd++}
+                        if(Campo[l+1][c-1] == "B"){qtdd++}
+                        if(Campo[l+1][c] == "B"){qtdd++}
+                        if(Campo[l+1][c+1] == "B"){qtdd++}
+                    }
+
+                   Campo[l][c] = qtdd;
+               }
+           }
+       }
+    }
+</script>
+</html>
