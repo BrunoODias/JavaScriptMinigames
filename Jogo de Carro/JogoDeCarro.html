@@ -4,8 +4,9 @@
 <body>
     <div class="m-auto mt-5" id="Page" style="width: 30rem;border: solid 1px;height: 40rem;">
         <div style="height: calc(100% - 4rem);overflow-y: hidden;" id="tela">
-        <div style="height: 5000rem;background: url('Images/Road.png');">
-            <img src="Images/Carro3.png" style="top: 526px;position: absolute;left: 335px;height: 4rem;transform: rotate(90deg);" id="Carro"></div>
+            <div style="height: 5000rem;background: url('Images/Road.png');position: relative;">
+                <img src="Images/Carro4.png" style="height: 8rem;width: 5rem;z-index: 999;top: 79872px;left: 92px;position: relative;" id="Carro">
+            </div>
         </div>
         <div style="display: flex;border-top: solid 1px;">
             <div style="width: 5rem;height: 4rem;border-right: solid 1px;font-size: 2rem;text-align: center;">&lt;</div>
@@ -15,11 +16,11 @@
             <div style="width: 5rem;height: 4rem;border-left: 1px solid;font-size: 2rem;text-align: center;">&gt;</div>
         </div>
     </div>
-
 </body>
 <script>
     var interval = null;
     var tela = document.getElementById('tela');
+    tela.scrollBy(0,9999999);
     
     function Init(){
         tela.scrollBy(0,9999999);
@@ -31,10 +32,10 @@
             clearInterval(interval);
         }
         var interval = setInterval(()=>{
-            tela.scrollBy(0,-1);
+            tela.scrollBy(0,-3);
+            setDirection(carro,'top', getDirection(carro,'top') - 2);
         },miliseconds);
     }
-    Init();
 
     var getDirection = (el, prop)=>Number(el.style[prop]?.replace('px',''));
     var setDirection = (el,prop,value)=>el.style[prop] = (value + 'px');
@@ -63,8 +64,6 @@
             diry = 1;
         }
     };
-
-
     var eventsUp = {
         ArrowLeft: ()=>{
             dirx = 0;
@@ -93,5 +92,7 @@
     setInterval(()=>{
         MoveCarro();
     },20);
+
+    // Init();
 </script>
 </html>
