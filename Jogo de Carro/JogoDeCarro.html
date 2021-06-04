@@ -1,98 +1,29 @@
-<html><head>
-    <link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap.min.css">
+<html>
+<head>
+    <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./site.css">
 </head>
 <body>
-    <div class="m-auto mt-5" id="Page" style="width: 30rem;border: solid 1px;height: 40rem;">
-        <div style="height: calc(100% - 4rem);overflow-y: hidden;" id="tela">
-            <div style="height: 5000rem;background: url('Images/Road.png');position: relative;">
-                <img src="Images/Carro4.png" style="height: 8rem;width: 5rem;z-index: 999;top: 79872px;left: 92px;position: relative;" id="Carro">
+    <div class="m-auto mt-5" id="Page">
+        <div id="display">
+            <div class="road position-relative">
+                <div style="top: 79800px;left: 325px;background: url(Images/car4.png);" class="car" id="Player">
+                    <div class="w-100 h-100"></div>
+                </div>
             </div>
         </div>
-        <div style="display: flex;border-top: solid 1px;">
+        <div class="d-flex" id="infos" style="border-top: solid 1px;">
             <div style="width: 5rem;height: 4rem;border-right: solid 1px;font-size: 2rem;text-align: center;">&lt;</div>
-            <div style="width: calc(100% - 10rem);text-align: center;font-size: 1.3rem;padding-top: 0.8rem;">
-                Distância percorrida: 0.2km
+            <div id="distanceMeter"
+                style="width: calc(100% - 10rem);text-align: center;font-size: 1.3rem;padding-top: 0.8rem;">
+                <span>Distância percorrida: 0.0km</span>
             </div>
             <div style="width: 5rem;height: 4rem;border-left: 1px solid;font-size: 2rem;text-align: center;">&gt;</div>
         </div>
     </div>
+    <script type="module" src="index.js"></script>
+    <script type="module" src="npcController.js"></script>
+    <script type="module" src="player.js"></script>
+    <script type="module" src="road.js"></script>
 </body>
-<script>
-    var interval = null;
-    var tela = document.getElementById('tela');
-    tela.scrollBy(0,9999999);
-    
-    function Init(){
-        tela.scrollBy(0,9999999);
-        SetVel(20);
-    };
-    
-    function SetVel(miliseconds){
-        if(interval != null){
-            clearInterval(interval);
-        }
-        var interval = setInterval(()=>{
-            tela.scrollBy(0,-3);
-            setDirection(carro,'top', getDirection(carro,'top') - 2);
-        },miliseconds);
-    }
-
-    var getDirection = (el, prop)=>Number(el.style[prop]?.replace('px',''));
-    var setDirection = (el,prop,value)=>el.style[prop] = (value + 'px');
-
-    var carro = document.getElementById('Carro'), x=335, y=526;
-
-    var dirx = 0, diry = 0;
-
-    function MoveCarro(){
-        setDirection(carro,'left', getDirection(carro,'left') + (5*dirx));
-        setDirection(carro,'top', getDirection(carro,'top') + (5*diry));
-    }
-
-
-    var events = {
-        ArrowLeft: ()=>{
-            dirx = -1;
-        },
-        ArrowUp: ()=>{
-            diry = -1;
-        },
-        ArrowRight: ()=>{
-            dirx = 1;
-        },
-        ArrowDown: ()=>{
-            diry = 1;
-        }
-    };
-    var eventsUp = {
-        ArrowLeft: ()=>{
-            dirx = 0;
-        },
-        ArrowUp: ()=>{
-            diry = 0;
-        },
-        ArrowRight: ()=>{
-            dirx = 0;
-        },
-        ArrowDown: ()=>{
-            diry = 0;
-        }
-    };
-
-    document.addEventListener('keydown',function(e){
-        if(events[e.key] != null)
-            events[e.key]();
-    })
-
-    document.addEventListener('keyup',function(e){
-        if(eventsUp[e.key] != null)
-            eventsUp[e.key]();
-    })
-
-    setInterval(()=>{
-        MoveCarro();
-    },20);
-
-    // Init();
-</script>
 </html>

@@ -1,0 +1,29 @@
+.flex {
+    display: flex;
+}
+
+.car {
+    height: 8rem;
+    width: 5rem;
+    z-index: 999;
+    position: absolute;
+    padding: 0.5rem;
+    background-size: cover !important;
+    background-repeat: round !important;
+}
+
+.road {
+    height: 5000rem;
+    background: url('Images/Road.png');
+}
+
+#display {
+    height: calc(100% - 4rem);
+    overflow-y: hidden;
+}
+
+#Page {
+    width: 744px;
+    border: solid 1px;
+    height: 40rem;
+}
