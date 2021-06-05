@@ -16,7 +16,7 @@ export class npcController {
 
     init = () => {
         this.stop();
-        this._timerToAddCar = 1_500;
+        this._timerToAddCar = 1_000;
 
         this._addCar();
         this._interval = setInterval(() => this.validCrash(), INTERVAL_MILISECONDS);
@@ -31,8 +31,8 @@ export class npcController {
     }
 
     _addEventAddCar() {
-        if (this._timerToAddCar < 500)
-            this._timerToAddCar = 500;
+        if (this._timerToAddCar < 300)
+            this._timerToAddCar = 300;
 
         this._addCar();
         this._addCar();
@@ -43,7 +43,7 @@ export class npcController {
 
     _addCar() {
         const npcCar = document.createElement('div');
-        var carSprite = (Math.round(Math.random() * 5.49999));
+        var carSprite = (Math.round(Math.random() * (Cars.length + 0.49999)));
         if(carSprite == 0){
             carSprite = 1;
         }
@@ -81,7 +81,7 @@ export class npcController {
         if (this._intervalAddCar)
             clearInterval(this._intervalAddCar);
 
-        this._timerToAddCar -= 300;
+        this._timerToAddCar -= 450;
         this._addEventAddCar();
     }
 }

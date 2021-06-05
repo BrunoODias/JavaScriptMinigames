@@ -26,4 +26,45 @@
     width: 744px;
     border: solid 1px;
     height: 40rem;
+    background: lightblue;
 }
+.car-selector-container{
+    height: 10rem;
+    border-top: solid 1px;
+    border-bottom: solid 1px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+.car-selector{
+    width: 8rem;
+    height: calc(100% - 1rem);
+    margin: 0.5rem;
+    cursor: pointer;
+}
+.btn-reiniciar{
+    font-size: 3rem;
+    border: solid 4px blue;
+    border-radius: 1rem;
+    padding: 0.5rem;
+    color: blue;
+    background: #0000ff69;
+    font-weight: 700;
+}
+
+::-webkit-scrollbar {
+    height: 10px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: lightblue;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }

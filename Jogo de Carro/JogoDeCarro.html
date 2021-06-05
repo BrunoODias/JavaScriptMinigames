@@ -1,29 +1,50 @@
 <html>
+
 <head>
     <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="./site.css">
 </head>
+
 <body>
     <div class="m-auto mt-5" id="Page">
         <div id="display">
-            <div class="road position-relative">
-                <div style="top: 79800px;left: 325px;background: url(Images/car4.png);" class="car" id="Player">
+            <div id="menu">
+                <div>
+                    <div style="text-align: center;" class="mt-5">
+                        <img src="Images/Logo.jpg" style="width: 25rem;">
+                    </div>
+                </div>
+                <p class="m-4" style="text-align: center;font-size: 2rem;">Selecione um carro</p>
+                <div class="mt-2 car-selector-container">
+                    <img class="car-selector">
+                </div>
+            </div>
+            <div class="road position-relative d-none">
+                <div style="top: 79800px;left: 325px;" class="car" id="Player">
                     <div class="w-100 h-100"></div>
                 </div>
             </div>
-        </div>
-        <div class="d-flex" id="infos" style="border-top: solid 1px;">
-            <div style="width: 5rem;height: 4rem;border-right: solid 1px;font-size: 2rem;text-align: center;">&lt;</div>
-            <div id="distanceMeter"
-                style="width: calc(100% - 10rem);text-align: center;font-size: 1.3rem;padding-top: 0.8rem;">
-                <span>Distância percorrida: 0.0km</span>
+            <div id="fim" class="d-none">
+                <div>
+                    <div style="text-align: center;" class="mt-5">
+                        <img src="Images/Crash.jpg" style="width: 25rem;">
+                    </div>
+                </div>
+                <p class="m-4" style="text-align: center;font-size: 2rem;color: red;"><text>Você perdeu</text></p>
+                <div>
+                    <div class="m-auto" style="width: fit-content;">
+                        <button class="btn-reiniciar" onclick="window.location.reload()">Reiniciar</button>
+                    </div>
+                </div>
             </div>
-            <div style="width: 5rem;height: 4rem;border-left: 1px solid;font-size: 2rem;text-align: center;">&gt;</div>
+        </div>
+        <div class="d-none" id="infos" style="border-top: solid 1px;">
+            <div id="distanceMeter" style="width: 100%;text-align: center;font-size: 1.3rem;padding-top: 0.8rem;">
+                <span>DistÃ¢ncia percorrida: 0.0km</span>
+            </div>
         </div>
     </div>
     <script type="module" src="index.js"></script>
-    <script type="module" src="npcController.js"></script>
-    <script type="module" src="player.js"></script>
-    <script type="module" src="road.js"></script>
 </body>
+
 </html>
